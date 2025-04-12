@@ -98,7 +98,7 @@
         }
 
         async function discoverDevice(code) {
-            const response = await fetch('backend/discover.php', {
+            const response = await fetch('discover.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ setupCode: code })
