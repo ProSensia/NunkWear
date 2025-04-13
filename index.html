@@ -1,43 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matter Device Control</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <style>
-        body { padding: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Management</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="qr-scanner.min.js"></script> <!-- QR Scanner Library -->
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Matter Device Control Panel</h1>
+  <div class="container">
+    <h1>Device Management Panel</h1>
 
-        <div class="mt-4 text-center">
-            <h3>Controlling Device: <code>04174023181</code></h3>
-            <button id="turn-on" class="btn btn-success m-2">Turn ON</button>
-            <button id="turn-off" class="btn btn-danger m-2">Turn OFF</button>
-        </div>
+    <!-- QR Code Scanning -->
+    <div class="section" id="qrSection">
+      <h2>Connect Device via QR Code</h2>
+      <button onclick="openQrScanner()">Scan QR Code</button>
+      <video id="qrScanner" style="display: none;"></video>
+      <p id="qrResult"></p>
+      <button onclick="connectDevice('qr')" style="display: none;" id="qrConnectButton">Connect Device</button>
     </div>
 
-    <script>
-        async function controlDevice(command) {
-            const response = await fetch('backend/discover.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ command }),
-            });
+    <!-- Manual Code Input -->
+    <div class="section">
+      <h2>Connect Device via Code</h2>
+      <input type="text" id="manualCode" placeholder="Enter Device Code">
+      <button onclick="connectDevice('manual')">Submit Code</button>
+    </div>
 
-            const data = await response.json();
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert(data.message);
-            }
-        }
+    <!-- Device Control Section -->
+    <div class="section" id="controlSection" style="display: none;">
+      <h2>Device Control</h2>
+      <p id="pairedDevice"></p>
+      <button onclick="toggleDevice()">Toggle Device</button>
+      <p id="deviceStatus">Device is OFF</p>
+    </div>
+  </div>
 
-        document.getElementById('turn-on').addEventListener('click', () => controlDevice('on'));
-        document.getElementById('turn-off').addEventListener('click', () => controlDevice('off'));
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
